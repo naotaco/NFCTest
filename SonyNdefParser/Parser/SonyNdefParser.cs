@@ -160,7 +160,7 @@ namespace NFCTest.SonyNdefUtils
                 int val = (int)payload[i];
                 Debug.WriteLine((char)val);
 
-                if (val > 0x19 && i > 0)
+                if (val > 0x19 && i > 1 && (int)payload[i - 2] == 0)
                 {
                     // ASCII
                     SSIDStartPointer = i;
@@ -188,7 +188,7 @@ namespace NFCTest.SonyNdefUtils
 
                 int val = (int)payload[i];
 
-                if (val > 0x19 && i > 0)
+                if (val > 0x19 && i > 1 && (int)payload[i - 2] == 0)
                 {
                     // if ASCII found
                     PasswordStartPointer = i;
