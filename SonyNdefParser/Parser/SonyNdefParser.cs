@@ -20,7 +20,6 @@ namespace NFCTest.SonyNdefUtils
             raw = input;
             records = new List<SonyNdefRecord>();
 
-            this.parse();
         }
 
         public SonyNdefParser(ProximityMessage message)
@@ -29,10 +28,28 @@ namespace NFCTest.SonyNdefUtils
             raw = rawMsg;
             records = new List<SonyNdefRecord>();
 
-            this.parse();
         }
 
-        private void parse()
+        public List<SonyNdefRecord> Parse()
+        {
+            try
+            {
+                this._parse();
+            }
+            catch
+            {
+                throw new NdefParseException("Failed to parse");
+            }
+
+            if (records.Count == 0)
+            {
+                throw new NoNdefRecordException("It seems that there's no ndef record.");
+            }
+
+            return records;
+        }
+
+        private void _parse()
         {
             int recordPointer = 0;
 
@@ -122,10 +139,7 @@ namespace NFCTest.SonyNdefUtils
             record.payload = sb.ToString();
             sb.Clear();
 
-            
-
-
-
+            records.Add(record);
 
             record.dump();
         }

@@ -24,6 +24,7 @@ namespace NFCTest
 
         private ProximityDevice _device;
         private long _subscriptionIdNdef;
+        private String output;
 
         // Constructor
         public MainPage()
@@ -33,6 +34,7 @@ namespace NFCTest
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
 
+            output = "";
 
             Loaded += (s, e) => {
                 this.initNFC();
@@ -59,10 +61,15 @@ namespace NFCTest
         {
             // Get the raw NDEF message data as byte array
             var parser = new SonyNdefParser(message);
+            var ndefRecords = parser.Parse();
 
-            
+            var record = ndefRecords[0];
+            output = "SSID : " + record.SSID + Environment.NewLine + "Password: " + record.Password;
+
+            Dispatcher.BeginInvoke(() => {
+                OutputText.Text = output;            
+            });
 
         }
-
     }
 }
