@@ -61,15 +61,43 @@ namespace NFCTest
         {
             // Get the raw NDEF message data as byte array
             var parser = new SonyNdefParser(message);
-            var ndefRecords = parser.Parse();
+            List<SonyNdefRecord> ndefRecords = new List<SonyNdefRecord>();
+            try
+            {
+                ndefRecords = parser.Parse();
+            }
+            catch (NoNdefRecordException e)
+            {
+                Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("It seems there's no Sony's format record");
+                });                
+            }
+            catch (NdefParseException e)
+            {
+                Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Parse error occured.");
+                });
+            }
+            catch (Exception e)
+            {
+                Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Unexpected error has occured.");
+                });
+            }
 
-            var record = ndefRecords[0];
-            output = "SSID : " + record.SSID + Environment.NewLine + "Password: " + record.Password;
+            if (ndefRecords.Count > 0)
+            {
+                var record = ndefRecords[0];
+                output = "SSID : " + record.SSID + Environment.NewLine + "Password: " + record.Password;
 
-            Dispatcher.BeginInvoke(() => {
-                OutputText.Text = output;            
-            });
-
+                Dispatcher.BeginInvoke(() =>
+                {
+                    OutputText.Text = output;
+                });
+            }
         }
     }
 }
