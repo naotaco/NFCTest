@@ -46,7 +46,7 @@ namespace NFCTest
             // Initialize NFC
             _device = ProximityDevice.GetDefault();
             // Only subscribe for messages if no NDEF subscription is already active
-            if (_subscriptionIdNdef != 0)
+            if (_subscriptionIdNdef != 0 || _device == null)
             {
                 Debug.WriteLine("It seems there's not NFC available device");
                 return;
@@ -55,6 +55,7 @@ namespace NFCTest
             // another device or tag.
             // Store the subscription ID so that we can cancel it later.
             _subscriptionIdNdef = _device.SubscribeForMessage("NDEF", MessageReceivedHandler);
+ 
         }
 
         private void MessageReceivedHandler(ProximityDevice sender, ProximityMessage message)
