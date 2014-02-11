@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NFCTest
+namespace NFCTest.SonyNdefUtils
 {
-    class SonyNdefRecord
+    public class SonyNdefRecord
     {
 
         public byte ndefHeader

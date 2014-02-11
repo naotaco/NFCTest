@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Networking.Proximity;
+using System.Runtime.InteropServices.WindowsRuntime;
 
-namespace NFCTest
+namespace NFCTest.SonyNdefUtils
 {
-    class SonyNdefParser
+    public class SonyNdefParser
     {
 
         private Byte[] raw;
@@ -16,6 +18,15 @@ namespace NFCTest
         public SonyNdefParser(Byte[] input)
         {
             raw = input;
+            records = new List<SonyNdefRecord>();
+
+            this.parse();
+        }
+
+        public SonyNdefParser(ProximityMessage message)
+        {
+            var rawMsg = message.Data.ToArray();
+            raw = rawMsg;
             records = new List<SonyNdefRecord>();
 
             this.parse();
